@@ -16,13 +16,20 @@ function shuffle(array) {
   return array;
 }
 
-function fill2DArray(size) {
-  var y = new Array(20);
-  for(i = 0; i < size; i++) {
-    y[i] = new Array(20);
-    for (j = 0; j < size; j++) {
-    }
-  }
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
 }
 
-console.log(shuffle([1,2,3,4,5,]))
+function fill2DArray(size) {
+  var y = new Array(size);
+  for(i = 0; i < size; i++) {
+    y[i] = new Array(size);
+    for (j = 0; j < size; j++) {
+      y[i][j] = Math.floor(Math.random() * 3);
+    }
+  }
+  return y;
+}
+
+console.log(shuffle([1,2,3,4,5,]));
+console.log(fill2DArray(5));
