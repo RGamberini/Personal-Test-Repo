@@ -16,4 +16,13 @@ function shuffle(array) {
   return array;
 }
 
+function fill2DArray(size) {
+  var y = new Array(20);
+  for(i = 0; i < size; i++) {
+    y[i] = new Array(20);
+    for (j = 0; j < size; j++) {
+    }
+  }
+}
+
 console.log(shuffle([1,2,3,4,5,]))

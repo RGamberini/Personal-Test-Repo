@@ -18,11 +18,9 @@ function shuffle(array) {
     array[currentIndex] = array[randomIndex];
     array[randomIndex] = temporaryValue;
   }
-
-  return array;
 }
 
-function spaceOccupiedBy(loc) {
+function entityAt(loc) {
   return map[loc.x][loc.y];
 }
 
@@ -34,33 +32,71 @@ function Location(x, y) {
   };
 }
 
-function move(loc1, loc2) {
+function canMove(loc) {
+  return map[loc.x][loc.y] === 0;
+}
+
+function move(loc, dir) {
+  var newLoc = loc.add(dir);
+  if (!canMove(newLoc))
+    return false;
   var temp = map[loc1.x][loc1.y];
   map[loc1.x][loc1.y] = 0;
+  map[newLoc.x][newLoc.y] = temp;
+  return true;
 }
 
 var types = [
+
+{
+  name: "Empty",
+  id: 0
+},
+
 {
   name: "Zombie",
   id: 1,
   move: function(loc) {
-    shuffled = shuffle(cardinaldirs); //List of random directions
-    c = 0;
-    do { //Loop through until you find a location that's unoccupied or return -1 for failure
-      entity = spaceOccupiedBy(loc.add(shuffled[c]));
-      c++;
-      if (c == shuffled.length - 1) {
-        return -1;
+    shuffle(cardinaldirs); //List of random directions
+    for(i = 0; i < cardinaldirs.length; i++) {
+      if (canMove(newLoc)) {
+        return move(loc, cardinaldirs[i]); // Do the move
       }
-    } while (entity !== 0);
-    move(loc, shuffled[c]); // Do the move
-    return 1; // 1 for success
+    }
+    return false;
+  }
+},
+
+{
+  name: "Victim",
+  id: 2,
+  move: function(loc) {
+    for (i = 0; i < dirs.size; i++) {
+      if(entityAt(loc.add(cardinaldirs[i])) == 1) {
+        shuffle(cardinaldirs);
+        move(loc, cardinaldirs[i]);
+      }
+    }
+  }
+},
+
+{
+  name: "Hunter",
+  id: 3,
+  move: function(loc) {
+    shuffle(dirs); //List of random directions
+    for(i = 0; i < dirs.length; i++) {
+      if (canMove(newLoc)) {
+        return move(loc, dirs[i]); // Do the move
+      }
+    }
+    return false;
   }
 }
 ],
 
 size = 20, //Board size
-map = new Array(size), //I have no better way to initialize a 2d array 
+map = new Array(size), //I have no better way to initialize a 2d array
 
 cardinaldirs = [ 0, 2, 4, 6 ], //for randomizing
 dirs = [ 0, 1, 2, 3, 4, 5, 6 ],
