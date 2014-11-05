@@ -2,8 +2,8 @@
   padding: 5px;
   background: #57534e;
   border-radius: 2%;
-  width: 264px;
-  height:290px;
+  width:300px;
+  height:380px;
   box-sizing: border-box;
   position: relative;
 }
@@ -17,7 +17,7 @@
   margin-right: 10px;
   margin-left: 10px;
   margin-top: 6px;
-  /*padding: 5px;*/
+  padding: 5px;
   text-align: right;
   color: #CBE86B;
   font-size: 40px;
@@ -48,6 +48,7 @@
 
 .button-column {
   margin-top:3px;
+  margin-right:3px;
 }
 .button-column.right {
   float:right;
