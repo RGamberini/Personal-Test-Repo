@@ -59,16 +59,27 @@ function moveLoc(loc, newLoc) {
   return true;
 }
 
-function getNeighbors(loc, dir) {
-  var neighbors = new Array(dir.length)
-  for (var i = 0; i < dir.length; i++) {
-    neighbors[i] = entityAt(loc.add(dir[i]));
+function getNeighbors(loc, dirs) {
+  var neighbors = new Array(dirs.length);
+  for (var i = 0; i < dirs.length; i++) {
+    neighbors[i] = entityAt(loc.add(dirVectors[dirs[i]]));
   }
   return neighbors;
 }
 
+function moveRandomly(loc, dirs) {
+  shuffle(dirs); //List of random directions
+  for (var i = 0; i < dirs.length; i++) {
+    var newLoc = loc.add(dirVectors[dirs[i]]);
+    if (canMove(newLoc)) {
+      return moveLoc(loc, newLoc); // Do the move
+    }
+  }
+  return false;
+}
+
 function inBounds(loc) {
-  return loc.x >= 0 && loc.x < size && loc.y >= 0 && loc.y < size
+  return loc.x >= 0 && loc.x < size && loc.y >= 0 && loc.y < size;
 }
 
 function prettyLocPrint(loc) { console.log("X: " + loc.x + " Y: " + loc.y); }
@@ -86,20 +97,15 @@ var types = [ //Where I keep the state info
       id: 1,
       actions:
       [ function move(loc) {
-        shuffle(dirs); //List of random directions
-        for (var i = 0; i < dirs.length; i++) {
-          var newLoc = loc.add(dirVectors[dirs[i]]);
-          if (canMove(newLoc)) {
-            return moveLoc(loc, newLoc); // Do the move
-          }
-        }
-        return false;
+        return moveRandomly(loc, cardinaldirs); //Zombies are simple creatures
       },
       function bite(loc) {
+
         shuffle(cardinaldirs);
         var neighbors = getNeighbors(loc, cardinaldirs); //Remember to shuffle!
         for (var i = 0; i < neighbors.length; i++) {
           if (neighbors[i] == 2 || neighbors[i] == 3) {
+            console.log("Called");
             neighbors[i] = 1;
           }
         }
@@ -113,9 +119,11 @@ var types = [ //Where I keep the state info
       actions:
       [ function move(loc) {
         var neighbors = getNeighbors(loc, dirs);
+        console.log(neighbors);
         for (var i = 0; i < neighbors.length; i++) {
-          if (neighbors[i] == 1) {
-            return moveDir(loc, cardinaldirs[getRandomInt(0, 3)]);
+          if (neighbors[i] === 1) {
+            console.log("Zombie!");
+            moveRandomly(loc, dirs);
           }
         }
         return false;
@@ -127,15 +135,7 @@ var types = [ //Where I keep the state info
       id: 3,
       actions: [
       function move(loc) {
-        shuffle(dirs);
-        for (var i = 0; i < dirs.length; i++) {
-          var newLoc = loc.add(dirVectors[dirs[i]]);
-          if (canMove(newLoc)) {
-            shuffle(dirs); //List of random directions
-            return moveLoc(loc, newLoc); // Do the move
-          }
-        }
-        return false;
+        return moveRandomly(loc, dirs);
       },
       function hunt(loc) {
         var neighbors = getNeighbors(loc, dirs),
@@ -167,7 +167,7 @@ for (var i = 0; i < size; i++) { //Fill Map
   }
 }
 
-map = [[1,0,0], [0,2,0], [0,0,1]];
+map = [[0,0,0], [0,0,0], [0,1,2]];
 
 var z = 100,
   v = 100,
