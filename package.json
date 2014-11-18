@@ -1,0 +1,24 @@
+{
+  "name": "NewGit",
+  "version": "1.0.0",
+  "description": "A simple zombie outbreak simulator based on a dailyprogrammer challenge (http://www.reddit.com/r/dailyprogrammer/comments/2kwfqr/10312014_challenge_186_special_code_or_treat/)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RGamberini/Personal-Test-Repo.git"
+  },
+  "author": "Rudy Gamberini",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RGamberini/Personal-Test-Repo/issues"
+  },
+  "homepage": "https://github.com/RGamberini/Personal-Test-Repo",
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "gulp-concat": "^2.4.1",
+    "gulp-ruby-sass": "^0.7.1"
+  }
+}
