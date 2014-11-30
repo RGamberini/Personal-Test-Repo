@@ -1,17 +1,67 @@
+
+var commonFunctions = {
+  shuffle: function (array) {
+    var currentIndex = array.length,
+      temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+  },
+  moveRandomly: function (grid, loc, directions) {
+    var potentialLocations = shuffle(grid.parseDirs(directions));
+    for (var i = 0; i < dirs.length; i++) {
+      var newLoc = loc.add(dirs[i]);
+      if (grid.canMove(newLoc)) {
+        console.log(types[map[loc.x][loc.y]].name + " just moved from (" + loc.x + ", " + loc.y + ") to (" + newLoc.x + ", " + newLoc.y + ")");
+        return moveLoc(loc, newLoc); // Do the move
+    }
+  }
+  return false;
+}},
+
+commonConstants = {
+  cardinal: ["Up", "Down", "Left", "Right"],
+  all: ["Up", "UpRight", "Right", "DownRight", "Down", "DownLeft", "Left", "UpLeft"]
+};
+
+
+/**
+ * State
+ * 			A State is a named object with a list of "actions" which are functions passed a location,
+  			 and a grid, that manipulate the grid based on the states of the location and the locations
+         in the grid around that location
+ * @param  {string} name    The name and accesor of the state use this with grid.state
+ * @param  {object} params  Parameters used in the action functions that may need to be accesed from the outside
+ * @param  {array} actions A list of functions of the actions a cell will do called in the order passed
+ */
+var State = function(name, params, actions) {
+  this.name = name;
+  this.params = params;
+  this.actions = actions;
+};
 var types = [ //Where I keep the state info
 
   {
     name: "Empty",
-    id: 0,
     actions: []
   },
 
   {
     name: "Zombie",
-    id: 1,
-    actions: [function move(loc) {
-        console.log("Zombie Move");
-        return moveRandomly(loc, cardinaldirs); //Zombies are simple creatures
+    params: {},
+    actions: [
+      function move(grid, loc) {
+        params.moveRandomly(grid, loc);
       },
       function bite(loc) {
         shuffle(cardinaldirs);
@@ -73,15 +123,3 @@ var types = [ //Where I keep the state info
     ]
   }
 ];
-
-function moveRandomly(loc, dirs) {
-  shuffle(dirs); //List of random directions
-  for (var i = 0; i < dirs.length; i++) {
-    var newLoc = loc.add(dirVectors[dirs[i]]);
-    if (canMove(newLoc)) {
-      console.log(types[map[loc.x][loc.y]].name + " just moved from (" + loc.x + ", " + loc.y + ") to (" + newLoc.x + ", " + newLoc.y + ")");
-      return moveLoc(loc, newLoc); // Do the move
-    }
-  }
-  return false;
-}

@@ -1,4 +1,6 @@
 node_modules/
-ZombieAttempt/src/JS/jquery-1.11.1.js
+ZombieAttempt/src/JS/libs/*.js
 ZombieAttempt/build/CSS/style.css
+ZombieAttempt/build/index.html
 ZombieAttempt/build/JS/main.js
+ZombieAttempt/build/JS/libs/*.js
